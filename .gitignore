@@ -1,0 +1,12 @@
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+WindowsNoEditor/
+Binaries/
+*.sdf
+*.sln
+*.suo
+.vs/
+*.VC.db
