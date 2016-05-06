@@ -17,9 +17,7 @@ The interresting part of the server is [RemoteJumpComponent.cpp](blob/master/Mes
 It implements an Actor Component which is intended to be placed on a Character, which listens to its `OnJumpNow` Event to act accordingly (that is, to jump).
 
 ### Initialization
-When `BeginPlay` is called, create an instance of `FMessageEndpoint` by using [`FMessageEndpoint::Builder()`](https://docs.unrealengine.com/latest/INT/API/Runtime/Messaging/Helpers/FMessageEndpointBuilder/index.html) with a given Endpoint name.
-The Endpoint name identifies...well, the endpoint used to talk to this server.
-It needs to be the same on the client, otherwise messages will not reach.
+When `BeginPlay` is called, create an instance of `FMessageEndpoint` by using [`FMessageEndpoint::Builder()`](https://docs.unrealengine.com/latest/INT/API/Runtime/Messaging/Helpers/FMessageEndpointBuilder/index.html) with a given Endpoint name (which is only used for debugging purposes, and does not influence how message are delivered).
 
 To indicate which messages the Endpoint handles, call the [`FMessageEndpointBuilder::Handling()`](https://docs.unrealengine.com/latest/INT/API/Runtime/Messaging/Helpers/FMessageEndpointBuilder/Handling/2/index.html) method and pass the message type as template parameter, along with the method to be called when such a message arrives.
 
@@ -50,5 +48,5 @@ Using the stored pointer to `FMessageEndpoint`, we can call its [`FMessageEndpoi
 This is a **broadcast** and will go out to all listening entities on the Message Bus...or none at all, if noone is listening.
 
 ## About the Messages
-A valid message must be a UStruct that contains only integral types (such as `bool`) or UObject types (such as `FString`).
+A valid message must be a UStruct that contain any `UPROPERTY` type except for `UObjects`. This means integral types (`int32`, `float`, etc.), selected container types (`TArray`, `TMap`, etc.), and other `UStructs`.
 It also needs a default constructor so it can be reconstructed on the other side.

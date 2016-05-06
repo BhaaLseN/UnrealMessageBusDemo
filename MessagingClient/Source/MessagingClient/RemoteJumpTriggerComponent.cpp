@@ -14,7 +14,7 @@ void URemoteJumpTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// grab an endpoint with the same name as the server
+	// grab an endpoint so we can shout out to everyone listening, and hopefully reach the server
 	JumpEndpoint = FMessageEndpoint::Builder("FRemoteJumpComponent").Build();
 }
 
@@ -22,8 +22,7 @@ void URemoteJumpTriggerComponent::BeginPlay()
 void URemoteJumpTriggerComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// release the message endpoint, to clean up resources.
-	if (JumpEndpoint.IsValid())
-		JumpEndpoint.Reset();
+	JumpEndpoint.Reset();
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -31,5 +30,6 @@ void URemoteJumpTriggerComponent::EndPlay(const EEndPlayReason::Type EndPlayReas
 void URemoteJumpTriggerComponent::TriggerJump()
 {
 	if (JumpEndpoint.IsValid())
+		// this is a *broadcast*, it is not directed at any particular recipient
 		JumpEndpoint->Publish<FJumpNowMessage>(new FJumpNowMessage());
 }

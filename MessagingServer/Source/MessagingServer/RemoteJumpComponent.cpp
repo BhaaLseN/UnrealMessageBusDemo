@@ -19,7 +19,7 @@ void URemoteJumpComponent::BeginPlay()
 		.Handling<FJumpNowMessage>(this, &URemoteJumpComponent::JumpNowHandler);
 
 	// if the endpoint is valid, we successfully connected to the message bus.
-	// this means we can subscribe to the messages we want to be notified of.
+	// this means we can subscribe to the broadcast messages we want to be notified of.
 	if (JumpEndpoint.IsValid())
 		JumpEndpoint->Subscribe<FJumpNowMessage>();
 }
@@ -28,9 +28,8 @@ void URemoteJumpComponent::BeginPlay()
 void URemoteJumpComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// release the message endpoint, which disconnects from the message bus.
-	if (JumpEndpoint.IsValid())
-		JumpEndpoint.Reset();
-	
+	JumpEndpoint.Reset();
+
 	Super::EndPlay(EndPlayReason);
 }
 
